@@ -4,46 +4,24 @@ CMDMainClass::CMDMainClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	addCommandsTOList();							//Function Calls FUNC(addCommandsTOVector) inside. Dont Touch IT
-	addCommandsTOChooseList();						//Function Calls FUNC(addCommandsTOChooseVector) inside. Dont Touch IT
-	ui.plainTextEdit->installEventFilter(this);		//for activating enter button inside plaintext
+	startFilteringList();							//For activating FilterList
+	ui.plainTextEdit->installEventFilter(this);		//For activating enter button inside plaintext
 
 }
 
 CMDMainClass::~CMDMainClass(){}
 
-//*********************************************************************Slot Defined Functions	**********
+//*********************************************************************Slot Defined Functions	**************************************
 void CMDMainClass::on_CommandsLists_currentIndexChanged(const QString& arg1)
 {
-	//take current path and add to text file with > operator;
-	getCurrentPath();//dont touch it
-	//take commands from commands list
-	commands_list_key_commands = arg1.toStdString();
-	commands_list_key_commands_for_writing = commands_list_key_commands;
-	if (commands_list_key_commands_for_writing == "-")
-		commands_list_key_commands_for_writing = "";
-	//For delay standart time current thread;
-	delayWorkingOneSecond();
-	//after clicking commands from list calling this func for first time
-	if (check_for_taking_list_command == 0)
-		writeInitially();
-	else
-	{
-		//if (check_for_taking_list_commandfor_else == 0)
-		//{
-			taking_list_command = QString::fromStdString(commands_list_key_commands_for_writing);
-			ui.plainTextEdit->insertPlainText(taking_list_command);
-			check_for_taking_list_commandfor_else++;
-			ui.CommandsLists->setCurrentIndex(0);
-		//1	}
-	}
-	check_for_taking_list_command++;
+	//For Choosing coommand from list
+	startCommandsListCurrentIndex(arg1);
 }
 
 void CMDMainClass::on_chooseCommandListFor_currentIndexChanged(const QString& arg1)
 {
 	//For Filtering Commands List Arguments
-
+	startCurrentCommandsFilter(arg1.toStdString());
 }
 
 bool CMDMainClass::eventFilter(QObject* object, QEvent* event)
@@ -65,9 +43,9 @@ void CMDMainClass::on_execute_btn_clicked(){
 	returnBackCursor();
 }
 
-//********************************************************************************************************
+//************************************************************************************************************************************
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //	*********************************************************************User Defined Functions	**********
 
@@ -139,35 +117,129 @@ bool CMDMainClass::returnCurrentCommandBool(void)
 void CMDMainClass::delayWorkingOneSecond(void){//For Delay Current Thread for one seconds
 	this_thread::sleep_for(chrono::milliseconds(STDDELAYSEC));}
 
-void CMDMainClass::addCommandsTOList(void)
+void CMDMainClass::addCommandsTOVectorGatherInform(void)
 {
-	//Addind CMD Commands Into The List
-	addCommandsTOVector();
-	ui.CommandsLists->addItem("-");
-	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_all.size(); i++)
-		ui.CommandsLists->addItem(commands_list_key_commands_vec_all [ i ]);
+	//Adding Commands To The List For Reading By User for Gathering Inform
+	commands_list_key_commands_vec_gather_inform.push_back("-");
+	commands_list_key_commands_vec_gather_inform.push_back("whoami");
+	commands_list_key_commands_vec_gather_inform.push_back("hostname");
 }
 
-void CMDMainClass::addCommandsTOVector(void)
+void CMDMainClass::addCommandsTOVectorNetworking(void)
 {
-	//Adding Commands To The List For Reading By User
-	commands_list_key_commands_vec_all.push_back("whoami");
-	commands_list_key_commands_vec_all.push_back("hostname");
+	//Adding Commands To The List For Reading By User for Networking
+	commands_list_key_commands_vec_network.push_back("-");
+	commands_list_key_commands_vec_network.push_back("ipconfig");
+	commands_list_key_commands_vec_network.push_back("arp -a");
+	commands_list_key_commands_vec_network.push_back("netsh wlan show profile");
 }
 
-void CMDMainClass::addCommandsTOChooseList(void)
+void CMDMainClass::addCommandsTOListForGatheringInform(void)
 {
-	//Add Filtering Commands to the List
-	addCommandsTOChooseVector();
-	for (uint_least16_t i = 0; i < choose_commands_list_key_commands_vec.size(); i++)
-		ui.chooseCommandListFor->addItem(choose_commands_list_key_commands_vec [ i ] );
+	//clear CommandsList for adding true Filtering Commands
+	if(!current_index_zero) 
+		ui.CommandsLists->clear();
+	//Addind CMD Commands Into The List for Gathering Inform
+	addCommandsTOVectorGatherInform();
+	//ui.CommandsLists->addItem("-");
+	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++)
+		ui.CommandsLists->addItem(commands_list_key_commands_vec_gather_inform [ i ] );
+	commands_list_key_commands_vec_gather_inform.clear();
 }
 
-void CMDMainClass::addCommandsTOChooseVector(void)
+void CMDMainClass::addCommandsTOChooseListNetworking(void)
 {
-	//Add Choosing List For Filtering Commands
-	choose_commands_list_key_commands_vec.push_back("All");
-	choose_commands_list_key_commands_vec.push_back("Network");
+	//clear CommandsList for adding true Filtering Commands
+	if (!current_index_zero) 
+		ui.CommandsLists->clear();
+	//Addind CMD Commands Into The List for Networking
+	addCommandsTOVectorNetworking();
+	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_network.size(); i++)
+		ui.CommandsLists->addItem(commands_list_key_commands_vec_network[ i ] );
+	commands_list_key_commands_vec_network.clear();
+}
+
+void CMDMainClass::addMapAllCommands()
+{
+	filter_current_commands_map.insert(std::pair<string, uint_least16_t>("All", 
+		0));
+	filter_current_commands_map.insert(std::pair<string, uint_least16_t>("Gather Information",
+		1));
+	filter_current_commands_map.insert(std::pair<string, uint_least16_t>("Networking",
+		2));
+
+}
+
+map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args)
+{
+	addMapAllCommands();//First Time for activating on_click event in filtering list this func will work
+	if (args == "All") addAllCommandsInCommandsList();//first filtering list commands is All which call every commands 
+	else
+	{
+		uint_least16_t check_for_index = 0;
+		map<string, uint_least16_t>::iterator it = filter_current_commands_map.begin();
+		while (it != filter_current_commands_map.end())
+		{
+			if (it->first == args)
+			{
+				current_index_zero = false;
+				chooseFilteringIndex(check_for_index);
+			}
+			it++;
+			++check_for_index;
+		}
+	}
+	return map<string, uint_least16_t>();
+}
+
+void CMDMainClass::startFilteringList()
+{
+	//Add All Filtering Keyword in Filtering List
+	ui.chooseCommandListFor->addItem("All");
+	ui.chooseCommandListFor->addItem("Gather Information");
+	ui.chooseCommandListFor->addItem("Networking");
+}
+
+void CMDMainClass::addAllCommandsInCommandsList()
+{
+	//Filtering keyword if equals ALL this func call
+	ui.CommandsLists->clear();
+	current_index_zero = true;
+	addCommandsTOChooseListNetworking();
+	addCommandsTOListForGatheringInform();
+}
+
+void CMDMainClass::startCommandsListCurrentIndex(QString args)
+{
+	//take current path and add to text file with > operator;
+	getCurrentPath();//dont touch it
+	//take commands from commands list
+	commands_list_key_commands = args.toStdString();
+	commands_list_key_commands_for_writing = commands_list_key_commands;
+	if (commands_list_key_commands_for_writing == "-")
+		commands_list_key_commands_for_writing = "";
+	//For delay standart time current thread;
+	delayWorkingOneSecond();
+	//after clicking commands from list calling this func for first time
+	if (check_for_taking_list_command == 0)writeInitially();
+	else
+	{
+		taking_list_command = QString::fromStdString(commands_list_key_commands_for_writing);
+		ui.plainTextEdit->insertPlainText(taking_list_command);
+		check_for_taking_list_commandfor_else++;
+		ui.CommandsLists->setCurrentIndex(0);
+	}
+	check_for_taking_list_command++;
+}
+
+void CMDMainClass::chooseFilteringIndex(uint_least16_t index)
+{
+	switch (index) 
+	{
+	case 1:addCommandsTOListForGatheringInform();			break;
+	case 2:addCommandsTOChooseListNetworking();				break;
+	default:"THIS IS IMPOSSIBLE";							break;
+	}
 }
 
 QString CMDMainClass::getCurrentPath()
@@ -187,13 +259,12 @@ QString CMDMainClass::getCurrentPath()
 	return take_current_path;
 }
 
-//when selected commands from list, this function will work 
 void CMDMainClass::writeInitially()
 {
+	//when selected commands from list, this function will work 
 	ui.plainTextEdit->insertPlainText(take_current_path + "> " + QString::fromStdString(
 		commands_list_key_commands_for_writing));
 }
 
+
 //********************************************************************************************************
-
-
