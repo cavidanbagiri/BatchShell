@@ -1,6 +1,14 @@
 #include "CMDCommandsList.h"
 
 
+void CMDCommandsList::startFilteringList(QComboBox * combo_box)
+{
+	//Add All Filtering Keyword in Filtering List
+	combo_box->addItem("All");
+	combo_box->addItem("Gather Information");
+	combo_box->addItem("Networking");
+}
+
 void CMDCommandsList::addCommandsTOVectorGatherInform(vector<QString>& commands_list_key_commands_vec_gather_inform)
 {
 	//Adding Commands To The List For Reading By User for Gathering Inform
