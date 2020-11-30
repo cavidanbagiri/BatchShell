@@ -18,6 +18,7 @@
 #include <iterator>
 #include "ui_CMDMainClass.h"
 #include "MACROS.h"
+#include "CMDCommandsList.h"
 
 using namespace std;
 using namespace chrono_literals;
@@ -34,6 +35,7 @@ private:
 	Ui::CMDMainClass ui;
 
 	//*************     take commands from commands list and return string   ***********************************
+	CMDCommandsList* CMDCommandsList_obj;//Take All Batch Commands										//******
 	QString taking_list_command = "NONE";	//take current commands from cmd list						//******
 	string commands_list_key_commands = "null";//take commands     										//******
 	string commands_list_key_commands_for_writing = "null";//take commands								//******
@@ -55,9 +57,7 @@ private:
 	void startCommandsListCurrentIndex(QString args);//Choosing index from CmdList this start		    //******
 	void chooseFilteringIndex(uint_least16_t index);//Call True commands for adding cmd lists			//******
 	void addCommandsTOListForGatheringInform(void);//Addind CMD Commands Into The List				    //******
-	void addCommandsTOVectorGatherInform(void);//Addind CMD Commands Into The List					    //******
-	void addCommandsTOVectorNetworking(void);//Addind CMD Commands Into The List					    //******
-	void addCommandsTOChooseListNetworking(void);//Addind CMD Commands Into The List				    //******
+	void addCommandsTOListForNetworking(void);//Addind CMD Commands Into The List				        //******
 	void delayWorkingOneSecond(void);//For Stopping Current Thread For User Gather Inform 			    //******	
 	void writeCommandToFile(void);//Execute current Command and writing to STDTEXTFILE				    //******
 	void returnBackCursor(void);//enter key for execute batch commands								    //******

@@ -4,6 +4,7 @@ CMDMainClass::CMDMainClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	CMDCommandsList_obj = new CMDCommandsList;
 	startMainFunction();
 }
 
@@ -117,43 +118,26 @@ bool CMDMainClass::returnCurrentCommandBool(void)
 void CMDMainClass::delayWorkingOneSecond(void){//For Delay Current Thread for one seconds
 	this_thread::sleep_for(chrono::milliseconds(STDDELAYSEC));}
 
-void CMDMainClass::addCommandsTOVectorGatherInform(void)
-{
-	//Adding Commands To The List For Reading By User for Gathering Inform
-	commands_list_key_commands_vec_gather_inform.push_back("-");
-	commands_list_key_commands_vec_gather_inform.push_back("whoami");
-	commands_list_key_commands_vec_gather_inform.push_back("hostname");
-}
-
-void CMDMainClass::addCommandsTOVectorNetworking(void)
-{
-	//Adding Commands To The List For Reading By User for Networking
-	commands_list_key_commands_vec_network.push_back("-");
-	commands_list_key_commands_vec_network.push_back("ipconfig");
-	commands_list_key_commands_vec_network.push_back("arp -a");
-	commands_list_key_commands_vec_network.push_back("netsh wlan show profile");
-}
-
 void CMDMainClass::addCommandsTOListForGatheringInform(void)
 {
 	//clear CommandsList for adding true Filtering Commands
 	if(!current_index_zero) 
 		ui.CommandsLists->clear();
 	//Addind CMD Commands Into The List for Gathering Inform
-	addCommandsTOVectorGatherInform();
+	CMDCommandsList_obj->addCommandsTOVectorGatherInform(commands_list_key_commands_vec_gather_inform);
 	//ui.CommandsLists->addItem("-");
 	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++)
 		ui.CommandsLists->addItem(commands_list_key_commands_vec_gather_inform [ i ] );
 	commands_list_key_commands_vec_gather_inform.clear();
 }
 
-void CMDMainClass::addCommandsTOChooseListNetworking(void)
+void CMDMainClass::addCommandsTOListForNetworking(void)
 {
 	//clear CommandsList for adding true Filtering Commands
 	if (!current_index_zero) 
 		ui.CommandsLists->clear();
 	//Addind CMD Commands Into The List for Networking
-	addCommandsTOVectorNetworking();
+	CMDCommandsList_obj->addCommandsTOVectorNetworking(commands_list_key_commands_vec_network);
 	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_network.size(); i++)
 		ui.CommandsLists->addItem(commands_list_key_commands_vec_network[ i ] );
 	commands_list_key_commands_vec_network.clear();
@@ -197,12 +181,12 @@ void CMDMainClass::startMainFunction(void)
 	startFilteringList();							//For activating FilterList
 	ui.plainTextEdit->installEventFilter(this);		//For activating enter button inside plaintext	
 	
-	//***********************************		Tab Widget        ****************************************      
-	ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget*********
-	ui.tabWidget->setMovable(true);											//Can Move Tab Icon***********					
-	ui.tabWidget->setMouseTracking(true);									//Set Highlightes for mouse***
-	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));//Closing Icon******
-	//****************************************************************************************************
+	//***********************************		Tab Widget   **********************************************      
+	ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget		***
+	ui.tabWidget->setMovable(true);											//Can Move Tab Icon			***				
+	ui.tabWidget->setMouseTracking(true);									//Set Highlightes for mouse ***
+	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));//Closing Icon     ***
+	//*****************************************************************************************************
 }
 
 void CMDMainClass::startFilteringList()
@@ -218,7 +202,7 @@ void CMDMainClass::addAllCommandsInCommandsList()
 	//Filtering keyword if equals ALL this func call
 	ui.CommandsLists->clear();
 	current_index_zero = true;
-	addCommandsTOChooseListNetworking();
+	addCommandsTOListForNetworking();
 	addCommandsTOListForGatheringInform();
 }
 
@@ -250,7 +234,7 @@ void CMDMainClass::chooseFilteringIndex(uint_least16_t index)
 	switch (index) 
 	{
 	case 1:addCommandsTOListForGatheringInform();			break;
-	case 2:addCommandsTOChooseListNetworking();				break;
+	case 2:addCommandsTOListForNetworking();				break;
 	default:"THIS IS IMPOSSIBLE";							break;
 	}
 }
