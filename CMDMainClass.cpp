@@ -4,14 +4,13 @@ CMDMainClass::CMDMainClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	startFilteringList();							//For activating FilterList
-	ui.plainTextEdit->installEventFilter(this);		//For activating enter button inside plaintext
-
+	startMainFunction();
 }
 
 CMDMainClass::~CMDMainClass(){}
 
 //*********************************************************************Slot Defined Functions	**************************************
+
 void CMDMainClass::on_CommandsLists_currentIndexChanged(const QString& arg1)
 {
 	//For Choosing coommand from list
@@ -43,11 +42,12 @@ void CMDMainClass::on_execute_btn_clicked(){
 	returnBackCursor();
 }
 
-//************************************************************************************************************************************
+void CMDMainClass::closeTab(const int& index)
+{
+	ui.tabWidget->removeTab(index);
+}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//	*********************************************************************User Defined Functions	**********
+//	*********************************************************************User Defined Functions	**************************************
 
 void CMDMainClass::writeCommandToFile(void)
 {
@@ -190,6 +190,19 @@ map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args
 		}
 	}
 	return map<string, uint_least16_t>();
+}
+
+void CMDMainClass::startMainFunction(void)
+{
+	startFilteringList();							//For activating FilterList
+	ui.plainTextEdit->installEventFilter(this);		//For activating enter button inside plaintext	
+	
+	//***********************************		Tab Widget        ****************************************      
+	ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget*********
+	ui.tabWidget->setMovable(true);											//Can Move Tab Icon***********					
+	ui.tabWidget->setMouseTracking(true);									//Set Highlightes for mouse***
+	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));//Closing Icon******
+	//****************************************************************************************************
 }
 
 void CMDMainClass::startFilteringList()

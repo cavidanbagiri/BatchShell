@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1003</width>
+    <width>842</width>
     <height>443</height>
    </rect>
   </property>
@@ -20,66 +20,84 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPlainTextEdit" name="plainTextEdit">
-       <property name="minimumSize">
-        <size>
-         <width>900</width>
-         <height>0</height>
-        </size>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color:black;
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Tab 1</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPlainTextEdit" name="plainTextEdit">
+             <property name="minimumSize">
+              <size>
+               <width>600</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color:black;
 color:green;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QComboBox" name="chooseCommandListFor">
-         <property name="styleSheet">
-          <string notr="true">background-color:white;
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QComboBox" name="chooseCommandListFor">
+               <property name="styleSheet">
+                <string notr="true">background-color:white;
 </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="CommandsLists">
-         <property name="styleSheet">
-          <string notr="true">background-color:white;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextEdit" name="TextScript">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color:white;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="execute_btn">
-         <property name="styleSheet">
-          <string notr="true">background-color:white;</string>
-         </property>
-         <property name="text">
-          <string>Insert</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="CommandsLists">
+               <property name="styleSheet">
+                <string notr="true">background-color:white;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTextEdit" name="TextScript">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color:white;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="execute_btn">
+               <property name="styleSheet">
+                <string notr="true">background-color:white;</string>
+               </property>
+               <property name="text">
+                <string>RUN</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </item>
     </layout>
    </item>
