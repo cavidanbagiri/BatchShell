@@ -52,7 +52,6 @@ private:
 
 	//***************************	User Defined FUnctions	****************************************************
 	void startMainFunction(void);//All Functions first start from this function							//******
-	void startFilteringList();//adding main commands and start using filter list				        //******
 	void addAllCommandsInCommandsList();//If Filtering commnds is All									//******
 	void startCommandsListCurrentIndex(QString args);//Choosing index from CmdList this start		    //******
 	void chooseFilteringIndex(uint_least16_t index);//Call True commands for adding cmd lists			//******

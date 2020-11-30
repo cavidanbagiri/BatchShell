@@ -178,23 +178,16 @@ map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args
 
 void CMDMainClass::startMainFunction(void)
 {
-	startFilteringList();							//For activating FilterList
-	ui.plainTextEdit->installEventFilter(this);		//For activating enter button inside plaintext	
+	CMDCommandsList_obj->startFilteringList(ui.chooseCommandListFor);		//Call from CMDCOmmandsList Class for creating filtering
+	ui.plainTextEdit->installEventFilter(this);								//For activating enter button inside plaintext	
 	
 	//***********************************		Tab Widget   **********************************************      
 	ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget		***
 	ui.tabWidget->setMovable(true);											//Can Move Tab Icon			***				
-	ui.tabWidget->setMouseTracking(true);									//Set Highlightes for mouse ***
-	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));//Closing Icon     ***
+	ui.tabWidget->setMouseTracking(true);								    //Set Highlightes for mouse ***
+	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)),					//						    ***
+		this, SLOT(closeTab(int)));//Closing Icon														***
 	//*****************************************************************************************************
-}
-
-void CMDMainClass::startFilteringList()
-{
-	//Add All Filtering Keyword in Filtering List
-	ui.chooseCommandListFor->addItem("All");
-	ui.chooseCommandListFor->addItem("Gather Information");
-	ui.chooseCommandListFor->addItem("Networking");
 }
 
 void CMDMainClass::addAllCommandsInCommandsList()
