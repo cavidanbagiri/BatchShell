@@ -44,7 +44,16 @@ void CMDMainClass::on_execute_btn_clicked(){
 	returnBackCursor();
 }
 
-
+void CMDMainClass::on_editor_btn_clicked()
+{
+	QString temp = ui.scriptText->toPlainText();
+	ofstream files;
+	files.open(STDSCRIPTFILE,std::ios::app);
+	if (files.is_open())
+		files << temp.toStdString();
+	ui.plainTextEdit->insertPlainText(STDSCRIPTFILE);
+	files.close();
+}
 
 //	*********************************************************************User Defined Functions	**************************************
 
@@ -116,14 +125,12 @@ void CMDMainClass::delayWorkingOneSecond(void){//For Delay Current Thread for on
 void CMDMainClass::addCommandsTOListForGatheringInform(void)
 {
 	//clear CommandsList for adding true Filtering Commands
-	if (!current_index_zero) {
+	if (!current_index_zero)
 		ui.listWidget->clear();
-	}
 	//Addind CMD Commands Into The List for Gathering Inform
 	CMDCommandsList_obj->addCommandsTOVectorGatherInform(commands_list_key_commands_vec_gather_inform);
-	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++) {
+	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++)
 		ui.listWidget->addItem(commands_list_key_commands_vec_gather_inform[i]);
-	}
 	
 	commands_list_key_commands_vec_gather_inform.clear();
 }
@@ -157,16 +164,18 @@ void CMDMainClass::setWidgetFixSize()
 	ui.chooseCommandListFor->setFixedWidth(DektopSize() * 0.2);
 }
 
-int CMDMainClass::DektopSize(){QDesktopWidget dw;return dw.width();}
+int CMDMainClass::DektopSize(){QDesktopWidget dw;return dw.width();
+}
 
 map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args)
 {
 	addMapAllCommands();//First Time for activating on_click event in filtering list this func will work
 	if (args == "All") {
 		addAllCommandsInCommandsList();
-		QListWidgetItem* itm = new QListWidgetItem();//yeni
+		QListWidgetItem* itm = new QListWidgetItem();
 		itm->setText("-");//yeni
-		startCommandsListCurrentIndex(itm->text());//yeni
+		startCommandsListCurrentIndex(itm->text());
+		delete itm;
 	}//first filtering list commands is All which call every commands 
 	else
 	{

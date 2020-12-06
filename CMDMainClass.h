@@ -13,7 +13,10 @@
 #include <qtextdocument.h>
 #include <qtextblock>
 #include <qcombobox.h>
+#include <qplaintextedit.h>
 #include <qkeyevent>
+#include <qfiledialog.h>
+#include <qdir.h>
 #include <map>
 #include <iterator>
 #include <qlistwidget.h>
@@ -81,7 +84,8 @@ private slots:
 	//*********************************************************	User Defining Slot Function		****************
 	void on_chooseCommandListFor_currentIndexChanged(const QString& arg1);//Item Selected and Filtering  //*****
 	void on_execute_btn_clicked();//run button from cli shell class										 //*****
-	void on_listWidget_itemClicked(QListWidgetItem* item);												 //*****
+	void on_editor_btn_clicked();//after scripting in ScriptText and execute							 //*****	
+	void on_listWidget_itemClicked(QListWidgetItem* item);//choosing commands from list widget			 //*****
 	//**********************************************************************************************************
 
 	
