@@ -4,6 +4,7 @@
 #include <qpushbutton.h>
 #include <QDebug>
 #include <qwidget.h>
+#include <qtabwidget.h>
 #include "ui_BatchShell.h"
 #include "CMDMainClass.h"
 
@@ -19,15 +20,20 @@ public:
 private:
     Ui::BatchShellClass ui;
 
-    //Creating an object CMDMainClass for opening
-    CMDMainClass* cmdmainclass_obj = nullptr;
 
-    //Calling func For Opening cmdmainclass
-    void OpenCMDMainClass();
+    //***************************************************** User Defined Member ********************************
+    CMDMainClass* cmdmainclass_obj = nullptr;//For Opening Batch Class                                     //***
+    //**********************************************************************************************************
+    
+    //***************************************************** User Defined Method ********************************
+    void startBatchClassAsDefault();                                                                       //***
+    //**********************************************************************************************************
 
 private slots:
 
-    //for opening main Command Prompt Window
-    void on_OpenBTN_clicked();
+    //***************************************************** User Defined Method ********************************
+    void closeTab(const int& index);//for closing tab widget											 //*****
+    //**********************************************************************************************************
+
 
 };
