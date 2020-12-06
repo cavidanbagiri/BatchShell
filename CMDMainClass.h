@@ -49,7 +49,6 @@ private:
 	uint_least16_t check_for_taking_list_command=0;//check for taking first time						//******
 	uint_least16_t check_for_taking_list_commandfor_else = 0;//check first time opening cmd text		//******
 	bool current_index_zero = true;//check if filtering index is 0 as default this will true			//******
-	bool checking_current_list_command = false;//check if filtering index is 0 as default this will true //******indi yazdim
 	//**********************************************************************************************************
 
 	//***************************	User Defined FUnctions	****************************************************
@@ -77,7 +76,6 @@ private:
 private slots:
 
 	//*********************************************************	User Defining Slot Function		****************
-	void on_CommandsLists_currentIndexChanged(const QString& arg1);//Item Selected and Write Text File   //*****
 	void on_chooseCommandListFor_currentIndexChanged(const QString& arg1);//Item Selected and Filtering  //*****
 	void on_execute_btn_clicked();//run button from cli shell class										 //*****
 	void closeTab(const int &index);//for closing tab widget											 //*****

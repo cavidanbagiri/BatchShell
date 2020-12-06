@@ -12,12 +12,6 @@ CMDMainClass::~CMDMainClass(){}
 
 //*********************************************************************Slot Defined Functions	**************************************
 
-void CMDMainClass::on_CommandsLists_currentIndexChanged(const QString& arg1)//bu combodur
-{
-	//For Choosing coommand from list
-	//startCommandsListCurrentIndex(arg1);//burda bir basa isleye bilmir ve ona gore listde islemir
-}
-
 void CMDMainClass::on_chooseCommandListFor_currentIndexChanged(const QString& arg1)
 {
 	//For Filtering Commands List Arguments
