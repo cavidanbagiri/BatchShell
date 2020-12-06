@@ -17,6 +17,7 @@
 #include <map>
 #include <iterator>
 #include <qlistwidget.h>
+#include <qdesktopwidget.h>
 #include "ui_CMDMainClass.h"
 #include "MACROS.h"
 #include "CMDCommandsList.h"
@@ -52,16 +53,18 @@ private:
 	//**********************************************************************************************************
 
 	//***************************	User Defined FUnctions	****************************************************
-	void startMainFunction(void);//All Functions first start from this function							//******
-	void addAllCommandsInCommandsList();//If Filtering commnds is All									//******
-	void startCommandsListCurrentIndex(QString args);//Choosing index from CmdList this start		    //******
-	void chooseFilteringIndex(uint_least16_t index);//Call True commands for adding cmd lists			//******
-	void addCommandsTOListForGatheringInform(void);//Addind CMD Commands Into The List				    //******
-	void addCommandsTOListForNetworking(void);//Addind CMD Commands Into The List				        //******
-	void delayWorkingOneSecond(void);//For Stopping Current Thread For User Gather Inform 			    //******	
-	void writeCommandToFile(void);//Execute current Command and writing to STDTEXTFILE				    //******
-	void returnBackCursor(void);//enter key for execute batch commands								    //******
-	void addMapAllCommands();//add all commands and vectors to the map									//******
+	[[noreturn]]void startMainFunction(void);//All Functions first start from this function				//******
+	[[noreturn]] void addAllCommandsInCommandsList();//If Filtering commnds is All						//******
+	[[noreturn]]void startCommandsListCurrentIndex(QString args);//Choosing index from CmdList this star//******
+	[[noreturn]]void chooseFilteringIndex(uint_least16_t index);//Call True commands for adding cmd list//******
+	[[noreturn]]void addCommandsTOListForGatheringInform(void);//Addind CMD Commands Into The List		//******
+	[[noreturn]]void addCommandsTOListForNetworking(void);//Addind CMD Commands Into The List	        //******
+	[[noreturn]]void delayWorkingOneSecond(void);//For Stopping Current Thread For User Gather Inform 	//******	
+	[[noreturn]]void writeCommandToFile(void);//Execute current Command and writing to STDTEXTFILE		//******
+	[[noreturn]]void returnBackCursor(void);//enter key for execute batch commands						//******
+	[[noreturn]]void addMapAllCommands();//add all commands and vectors to the map						//******
+	[[noreturn]]void setWidgetFixSize();//add all commands and vectors to the map						//******
+	[[return]]int DektopSize();//Take current Desktop size												//******
 	bool returnCurrentCommandBool(void);//check true command for returning true or false   			    //******
 	bool eventFilter(QObject* object, QEvent* event);//enter key for execute batch commands			    //******
 	string returnCurrentCommand(void);//read from textedit and check command is in list	   			    //******
@@ -78,7 +81,6 @@ private slots:
 	//*********************************************************	User Defining Slot Function		****************
 	void on_chooseCommandListFor_currentIndexChanged(const QString& arg1);//Item Selected and Filtering  //*****
 	void on_execute_btn_clicked();//run button from cli shell class										 //*****
-	void closeTab(const int &index);//for closing tab widget											 //*****
 	void on_listWidget_itemClicked(QListWidgetItem* item);												 //*****
 	//**********************************************************************************************************
 

@@ -4,6 +4,7 @@ CMDMainClass::CMDMainClass(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	setWidgetFixSize();
 	CMDCommandsList_obj = new CMDCommandsList;
 	startMainFunction();
 }
@@ -43,10 +44,7 @@ void CMDMainClass::on_execute_btn_clicked(){
 	returnBackCursor();
 }
 
-void CMDMainClass::closeTab(const int& index)
-{
-	ui.tabWidget->removeTab(index);
-}
+
 
 //	*********************************************************************User Defined Functions	**************************************
 
@@ -76,17 +74,13 @@ string CMDMainClass::returnCurrentCommand(void)
 	uint_least16_t i = 0;
 	if (__temp.size() > 2) {
 		for (; i < __temp.size(); i++)
-		{
-			if (__temp[i] == '>')
-				break;
-		}
+			if (__temp[i] == '>')break;
 		__current_command.resize(__temp.size() - ++i);
 		for (uint_least16_t j = 0; i < __temp.size(); i++, j++)
 			__current_command[j] = __temp[i];
 		commands_list_key_commands = "-";
 		startCommandsListCurrentIndex(QString::fromStdString(commands_list_key_commands));
-	}
-	else writeInitially();
+	} else writeInitially();
 	return __current_command;
 }
 
@@ -100,15 +94,13 @@ bool CMDMainClass::returnCurrentCommandBool(void)
 	if (temp_file.is_open())
 	{
 		while (getline(temp_file, line)) {
-			if (line == "\n")
-				continue;
+			if (line == "\n")continue;
 			ui.plainTextEdit->insertPlainText("\n" + QString::fromStdString(line) + "\n");
 		}
 		writeInitially();
 		temp_file.close();
 		string for_deleting = "DEL "; for_deleting += +STDTEXTFILE;
 		system(for_deleting.c_str());
-		ui.CommandsLists->setCurrentIndex(0);
 		ui.listWidget->setCurrentRow(0);
 	}
 	else {
@@ -125,13 +117,11 @@ void CMDMainClass::addCommandsTOListForGatheringInform(void)
 {
 	//clear CommandsList for adding true Filtering Commands
 	if (!current_index_zero) {
-		ui.CommandsLists->clear();
 		ui.listWidget->clear();
 	}
 	//Addind CMD Commands Into The List for Gathering Inform
 	CMDCommandsList_obj->addCommandsTOVectorGatherInform(commands_list_key_commands_vec_gather_inform);
 	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++) {
-		ui.CommandsLists->addItem(commands_list_key_commands_vec_gather_inform[i]);
 		ui.listWidget->addItem(commands_list_key_commands_vec_gather_inform[i]);
 	}
 	
@@ -141,17 +131,12 @@ void CMDMainClass::addCommandsTOListForGatheringInform(void)
 void CMDMainClass::addCommandsTOListForNetworking(void)
 {
 	//clear CommandsList for adding true Filtering Commands
-	if (!current_index_zero) {
+	if (!current_index_zero)
 		ui.listWidget->clear();
-		ui.CommandsLists->clear();
-	}
 	//Addind CMD Commands Into The List for Networking
 	CMDCommandsList_obj->addCommandsTOVectorNetworking(commands_list_key_commands_vec_network);
 	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_network.size(); i++)
-	{
-		ui.CommandsLists->addItem(commands_list_key_commands_vec_network[i]);
 		ui.listWidget->addItem(commands_list_key_commands_vec_network[i]);
-	}
 	commands_list_key_commands_vec_network.clear();
 }
 
@@ -165,6 +150,14 @@ void CMDMainClass::addMapAllCommands()
 		2));
 
 }
+
+void CMDMainClass::setWidgetFixSize()
+{
+	ui.listWidget->setFixedWidth(DektopSize() * 0.2);
+	ui.chooseCommandListFor->setFixedWidth(DektopSize() * 0.2);
+}
+
+int CMDMainClass::DektopSize(){QDesktopWidget dw;return dw.width();}
 
 map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args)
 {
@@ -196,21 +189,12 @@ map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args
 void CMDMainClass::startMainFunction(void)
 {
 	CMDCommandsList_obj->startFilteringList(ui.chooseCommandListFor);		//Call from CMDCOmmandsList Class for creating filtering
-	ui.plainTextEdit->installEventFilter(this);								//For activating enter button inside plaintext	
-	
-	//***********************************		Tab Widget   **********************************************      
-	ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget		***
-	ui.tabWidget->setMovable(true);											//Can Move Tab Icon			***				
-	ui.tabWidget->setMouseTracking(true);								    //Set Highlightes for mouse ***
-	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)),					//						    ***
-		this, SLOT(closeTab(int)));//Closing Icon														***
-	//*****************************************************************************************************
+	ui.plainTextEdit->installEventFilter(this);								//For activating enter button inside plaintext		
 }
 
 void CMDMainClass::addAllCommandsInCommandsList()
 {
 	//Filtering keyword if equals ALL this func call
-	ui.CommandsLists->clear();
 	ui.listWidget->clear();
 	current_index_zero = true;
 	addCommandsTOListForNetworking();
@@ -236,7 +220,6 @@ void CMDMainClass::startCommandsListCurrentIndex(QString args)
 		taking_list_command = QString::fromStdString(commands_list_key_commands_for_writing);
 		ui.plainTextEdit->insertPlainText(taking_list_command);
 		check_for_taking_list_commandfor_else++;
-		ui.CommandsLists->setCurrentIndex(0);//burda olmalidir
 		ui.listWidget->setCurrentRow(0);
 	}
 	check_for_taking_list_command++;
