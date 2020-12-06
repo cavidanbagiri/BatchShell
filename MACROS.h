@@ -8,6 +8,10 @@
 #define STDTEXTFILE "temp.txt"
 #endif
 
+#ifndef STDSCRIPTFILE
+#define STDSCRIPTFILE "script.bat"
+#endif
+
 #ifndef STDCURRENTFILE
 #define STDCURRENTFILE "current.txt"
 #endif
