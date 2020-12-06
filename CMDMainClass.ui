@@ -91,6 +91,13 @@ color:green;</string>
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QListWidget" name="listWidget">
+               <property name="styleSheet">
+                <string notr="true">background-color:white</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
