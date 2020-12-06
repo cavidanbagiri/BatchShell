@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="BatchShell">
+    <qresource prefix="/BatchShell">
+        <file>cmd.png</file>
     </qresource>
 </RCC>

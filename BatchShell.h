@@ -32,7 +32,8 @@ private:
 private slots:
 
     //***************************************************** User Defined Method ********************************
-    void closeTab(const int& index);//for closing tab widget											 //*****
+    void closeTab(const int& index);//for closing tab widget											   //***
+    void on_actionBatch_triggered();//for opening batch class from menu                                    //*** 
     //**********************************************************************************************************
 
 

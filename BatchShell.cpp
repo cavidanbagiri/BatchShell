@@ -11,12 +11,17 @@ BatchShell::BatchShell(QWidget *parent)
 
 void BatchShell::closeTab(const int& index){ui.tabWidget->removeTab(index);}
 
+void BatchShell::on_actionBatch_triggered()
+{
+    delete cmdmainclass_obj;
+    cmdmainclass_obj = new CMDMainClass();
+    ui.tabWidget->addTab(cmdmainclass_obj, "BATCH");
+}
 
 //***************************************************** User Defined Method ********************************
 
 void BatchShell::startBatchClassAsDefault()
 {
-
     ui.tabWidget->setTabsClosable(true);									//Can Close TabWidget		***
     ui.tabWidget->setMovable(true);											//Can Move Tab Icon			***				
     ui.tabWidget->setMouseTracking(true);								    //Set Highlightes for mouse ***
@@ -25,3 +30,5 @@ void BatchShell::startBatchClassAsDefault()
     cmdmainclass_obj = new CMDMainClass();
     ui.tabWidget->addTab(cmdmainclass_obj, "BATCH");
 }
+
+
