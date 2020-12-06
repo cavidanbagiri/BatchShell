@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <qwidget.h>
 #include <qtabwidget.h>
+#include <qfiledialog.h>
+#include <qdir.h>
 #include "ui_BatchShell.h"
 #include "CMDMainClass.h"
 
