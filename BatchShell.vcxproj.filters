@@ -44,6 +44,9 @@
     <ClCompile Include="CMDMainClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CMDCommandsList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="CMDMainClass.h">
@@ -57,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MACROS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CMDCommandsList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

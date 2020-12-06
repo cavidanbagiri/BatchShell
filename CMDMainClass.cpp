@@ -12,16 +12,22 @@ CMDMainClass::~CMDMainClass(){}
 
 //*********************************************************************Slot Defined Functions	**************************************
 
-void CMDMainClass::on_CommandsLists_currentIndexChanged(const QString& arg1)
+void CMDMainClass::on_CommandsLists_currentIndexChanged(const QString& arg1)//bu combodur
 {
 	//For Choosing coommand from list
-	startCommandsListCurrentIndex(arg1);
+	//startCommandsListCurrentIndex(arg1);//burda bir basa isleye bilmir ve ona gore listde islemir
 }
 
 void CMDMainClass::on_chooseCommandListFor_currentIndexChanged(const QString& arg1)
 {
 	//For Filtering Commands List Arguments
 	startCurrentCommandsFilter(arg1.toStdString());
+}
+
+void CMDMainClass::on_listWidget_itemClicked(QListWidgetItem* item)//bunun islememesinin sebebi avtomatik olaraq ise dusmemesidir
+{
+	//if(checking_current_list_command==false)
+	startCommandsListCurrentIndex(item->text());
 }
 
 bool CMDMainClass::eventFilter(QObject* object, QEvent* event)
@@ -83,6 +89,8 @@ string CMDMainClass::returnCurrentCommand(void)
 		__current_command.resize(__temp.size() - ++i);
 		for (uint_least16_t j = 0; i < __temp.size(); i++, j++)
 			__current_command[j] = __temp[i];
+		commands_list_key_commands = "-";
+		startCommandsListCurrentIndex(QString::fromStdString(commands_list_key_commands));
 	}
 	else writeInitially();
 	return __current_command;
@@ -107,6 +115,7 @@ bool CMDMainClass::returnCurrentCommandBool(void)
 		string for_deleting = "DEL "; for_deleting += +STDTEXTFILE;
 		system(for_deleting.c_str());
 		ui.CommandsLists->setCurrentIndex(0);
+		ui.listWidget->setCurrentRow(0);
 	}
 	else {
 		ui.plainTextEdit->insertPlainText("\n");
@@ -121,25 +130,34 @@ void CMDMainClass::delayWorkingOneSecond(void){//For Delay Current Thread for on
 void CMDMainClass::addCommandsTOListForGatheringInform(void)
 {
 	//clear CommandsList for adding true Filtering Commands
-	if(!current_index_zero) 
+	if (!current_index_zero) {
 		ui.CommandsLists->clear();
+		ui.listWidget->clear();
+	}
 	//Addind CMD Commands Into The List for Gathering Inform
 	CMDCommandsList_obj->addCommandsTOVectorGatherInform(commands_list_key_commands_vec_gather_inform);
-	//ui.CommandsLists->addItem("-");
-	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++)
-		ui.CommandsLists->addItem(commands_list_key_commands_vec_gather_inform [ i ] );
+	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_gather_inform.size(); i++) {
+		ui.CommandsLists->addItem(commands_list_key_commands_vec_gather_inform[i]);
+		ui.listWidget->addItem(commands_list_key_commands_vec_gather_inform[i]);
+	}
+	
 	commands_list_key_commands_vec_gather_inform.clear();
 }
 
 void CMDMainClass::addCommandsTOListForNetworking(void)
 {
 	//clear CommandsList for adding true Filtering Commands
-	if (!current_index_zero) 
+	if (!current_index_zero) {
+		ui.listWidget->clear();
 		ui.CommandsLists->clear();
+	}
 	//Addind CMD Commands Into The List for Networking
 	CMDCommandsList_obj->addCommandsTOVectorNetworking(commands_list_key_commands_vec_network);
 	for (uint_least16_t i = 0; i < commands_list_key_commands_vec_network.size(); i++)
-		ui.CommandsLists->addItem(commands_list_key_commands_vec_network[ i ] );
+	{
+		ui.CommandsLists->addItem(commands_list_key_commands_vec_network[i]);
+		ui.listWidget->addItem(commands_list_key_commands_vec_network[i]);
+	}
 	commands_list_key_commands_vec_network.clear();
 }
 
@@ -157,7 +175,12 @@ void CMDMainClass::addMapAllCommands()
 map<string, uint_least16_t> CMDMainClass::startCurrentCommandsFilter(string args)
 {
 	addMapAllCommands();//First Time for activating on_click event in filtering list this func will work
-	if (args == "All") addAllCommandsInCommandsList();//first filtering list commands is All which call every commands 
+	if (args == "All") {
+		addAllCommandsInCommandsList();
+		QListWidgetItem* itm = new QListWidgetItem();//yeni
+		itm->setText("-");//yeni
+		startCommandsListCurrentIndex(itm->text());//yeni
+	}//first filtering list commands is All which call every commands 
 	else
 	{
 		uint_least16_t check_for_index = 0;
@@ -194,6 +217,7 @@ void CMDMainClass::addAllCommandsInCommandsList()
 {
 	//Filtering keyword if equals ALL this func call
 	ui.CommandsLists->clear();
+	ui.listWidget->clear();
 	current_index_zero = true;
 	addCommandsTOListForNetworking();
 	addCommandsTOListForGatheringInform();
@@ -211,13 +235,15 @@ void CMDMainClass::startCommandsListCurrentIndex(QString args)
 	//For delay standart time current thread;
 	delayWorkingOneSecond();
 	//after clicking commands from list calling this func for first time
-	if (check_for_taking_list_command == 0)writeInitially();
+	if (check_for_taking_list_command == 0)
+		writeInitially();
 	else
 	{
 		taking_list_command = QString::fromStdString(commands_list_key_commands_for_writing);
 		ui.plainTextEdit->insertPlainText(taking_list_command);
 		check_for_taking_list_commandfor_else++;
-		ui.CommandsLists->setCurrentIndex(0);
+		ui.CommandsLists->setCurrentIndex(0);//burda olmalidir
+		ui.listWidget->setCurrentRow(0);
 	}
 	check_for_taking_list_command++;
 }
